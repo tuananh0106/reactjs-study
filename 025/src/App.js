@@ -15,8 +15,12 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <AddTask />
-      <TaskList tasks={tasks} setTasks={setTasks} />
+      
+      <main>
+        <AddTask tasks={tasks} setTasks={setTasks} />
+        <TaskList tasks={tasks} setTasks={setTasks} />
+      </main>
+
       <Footer />
     </div>
   );
