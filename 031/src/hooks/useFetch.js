@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export const useFetch = (url) => {
+export const useFetch = (url, _body) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const body = useRef(_body);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -11,7 +12,7 @@ export const useFetch = (url) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(url, { signal: controller.signal });
+        const response = await fetch(url, { signal: controller.signal }, body);
         if (!response.ok) {
           throw new Error(response.statusText);
         }
@@ -19,6 +20,7 @@ export const useFetch = (url) => {
         setLoading(false);
         setData(result);
         setError("");
+        console.log("abc");
       } catch (error) {
         setLoading(false);
         setError(error.message);
@@ -28,6 +30,6 @@ export const useFetch = (url) => {
     console.log(error);
 
     return () => controller.abort();
-  }, [url]);
+  }, [url, body]);
   return { data, loading, error };
 };
